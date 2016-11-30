@@ -30,6 +30,7 @@ yeni->data = veri;
  }else{
  yeni->sonraki = *bas;
  yeni->onceki = NULL;
+ (*bas)->onceki = yeni;
  *bas = yeni;
  }
 
@@ -127,10 +128,8 @@ struct node *ilk = NULL;
 struct node *son = NULL;
 struct node *gezici = NULL;
 
-//ilk = (struct node*)malloc(sizeof(struct node));
-//ilk->sonraki = NULL;
-//son = ilk;
-//gezici = son;
+int uzunluk = 0;
+
 
 int tus=0; /// basilan tusu alacagimiz degisken
 int tus2=0; /// ilk tus shift ctrl gibi ise bunu kullanýcaz
@@ -156,8 +155,12 @@ if(tus > 31 && tus < 127 )  {
       if(GetAsyncKeyState(VK_LEFT)){
 
         if(wherex()>0 && gezici->onceki != NULL){
+              if(gezici == son && wherex()>uzunluk){
+                gotoxy(wherex()-1,wherey());
+              }else{
             gezici = gezici->onceki;
             gotoxy(wherex()-1,wherey());
+           }
         }
 
       }else if(GetAsyncKeyState(VK_RIGHT)){
@@ -181,6 +184,7 @@ if(tus > 31 && tus < 127 )  {
 
       if(gezici == son){ /// Gezici yeri kontrolu ozel yerler bas ve son ise ona gore islem yap
         sonaEkle(&ilk,&son,tus);
+        uzunluk++;
         gezici=son;
         clrscr();
         Listele(ilk);
@@ -188,20 +192,22 @@ if(tus > 31 && tus < 127 )  {
         int x,y;
           x = wherex();
           y = wherey();
-        basaEkle(&(ilk->sonraki),&son,tus);
+        basaEkle(&ilk,&son,tus);
+        uzunluk++;
         gezici = ilk;
         clrscr();
         Listele(ilk);
-        gotoxy(x,y);
+      gotoxy(x,y);
       }else{
           int x,y;
           x = wherex();
           y = wherey();
-       arayaEkle(&(gezici->sonraki),tus);
+       arayaEkle(&gezici,tus);
+       uzunluk++;
          clrscr();
       Listele(ilk);
       // gezici = gezici->onceki;
-      gotoxy(x,y);
+      gotoxy(x+1,y);
       }
 
    // printf("%c",tus);
