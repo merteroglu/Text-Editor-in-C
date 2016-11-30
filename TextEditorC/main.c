@@ -1,3 +1,4 @@
+///Ufuk Demir - Mert eroglu Prolab
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
@@ -50,13 +51,12 @@ yeni->data = veri;
 }
 
 void arayaEkle(struct node **ara,char veri){
-struct node *yeni = malloc(sizeof(struct node));
-yeni->data = veri;
-yeni->onceki = (*ara)->onceki;
-(*ara)->onceki->sonraki = yeni;
-yeni->sonraki = (*ara);
-(*ara)->onceki = yeni;
-
+    struct node *yeni = malloc(sizeof(struct node));
+    yeni->data = veri;
+    yeni->onceki = (*ara)->onceki;
+    (*ara)->onceki->sonraki = yeni;
+    yeni->sonraki = (*ara);
+    (*ara)->onceki = yeni;
 }
 
 
@@ -186,19 +186,19 @@ if(tus > 31 && tus < 127 )  {
       if(gezici == son){ /// Gezici yeri kontrolu ozel yerler bas ve son ise ona gore islem yap
         sonaEkle(&ilk,&son,tus);
         gezici=son;
-        //clrscr();
-        //Listele(ilk);
+        clrscr();
+        Listele(ilk);
       } else if(gezici == ilk){
         basaEkle(&ilk,&son,tus);
-        //clrscr();
-        //Listele(ilk);
+        clrscr();
+        Listele(ilk);
       }else{
        arayaEkle(&gezici,tus);
-         //clrscr();
-        //Listele(ilk);
+         clrscr();
+        Listele(ilk);
       }
 
-    printf("%c",tus);
+   // printf("%c",tus);
 
     } /// en son else in bitisi
 } /// Tus 31-127 aralik kontrol bitisi
