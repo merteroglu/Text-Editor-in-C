@@ -1,0 +1,7 @@
+Compiler linker settings other linker 
+-lconio
+yazýlmalý.
+Conio.h mingw include içersine
+lib dosyasý mingw lib içersine atýlmalý.
+Lib dosyasý yolu gösterilmeli.Derleyicide
+-Mert Eroglu 
