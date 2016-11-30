@@ -54,8 +54,8 @@ void arayaEkle(struct node **ara,char veri){
     struct node *yeni = malloc(sizeof(struct node));
     yeni->data = veri;
     yeni->onceki = (*ara)->onceki;
-    (*ara)->onceki->sonraki = yeni;
     yeni->sonraki = (*ara);
+    (*ara)->onceki->sonraki = yeni;
     (*ara)->onceki = yeni;
 }
 
@@ -123,14 +123,14 @@ void main()
 {
 Ekrani_Ciz(); /// Test Amacli Sonra kaldirabiliriz
 
-struct node *ilk;
-struct node *son;
-struct node *gezici;
+struct node *ilk = NULL;
+struct node *son = NULL;
+struct node *gezici = NULL;
 
-ilk = (struct node*)malloc(sizeof(struct node));
-ilk->sonraki = NULL;
-son = ilk;
-gezici = son;
+//ilk = (struct node*)malloc(sizeof(struct node));
+//ilk->sonraki = NULL;
+//son = ilk;
+//gezici = son;
 
 int tus=0; /// basilan tusu alacagimiz degisken
 int tus2=0; /// ilk tus shift ctrl gibi ise bunu kullanýcaz
@@ -158,10 +158,6 @@ if(tus > 31 && tus < 127 )  {
         if(wherex()>0 && gezici->onceki != NULL){
             gezici = gezici->onceki;
             gotoxy(wherex()-1,wherey());
-           // int x = wherex();
-           // int y = wherey();
-           // printf("\n Gezici degeri : %d",gezici->data);
-           // gotoxy(x,y);
         }
 
       }else if(GetAsyncKeyState(VK_RIGHT)){
@@ -189,13 +185,23 @@ if(tus > 31 && tus < 127 )  {
         clrscr();
         Listele(ilk);
       } else if(gezici == ilk){
-        basaEkle(&ilk,&son,tus);
+        int x,y;
+          x = wherex();
+          y = wherey();
+        basaEkle(&(ilk->sonraki),&son,tus);
+        gezici = ilk;
         clrscr();
         Listele(ilk);
+        gotoxy(x,y);
       }else{
-       arayaEkle(&gezici,tus);
+          int x,y;
+          x = wherex();
+          y = wherey();
+       arayaEkle(&(gezici->sonraki),tus);
          clrscr();
-        Listele(ilk);
+      Listele(ilk);
+      // gezici = gezici->onceki;
+      gotoxy(x,y);
       }
 
    // printf("%c",tus);
