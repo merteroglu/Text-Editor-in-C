@@ -16,26 +16,21 @@ char data;
 struct node *onceki;
 struct node *sonraki;
 };
-
-
 void Listele(struct node *bas);
-
 void basaEkle(struct node **bas,struct node **son,char veri){
-struct node *yeni = malloc(sizeof(struct node));
-yeni->data = veri;
- if(*bas == NULL){  /// Listede eleman yoksa
-    yeni->sonraki = NULL;
-    yeni->onceki = NULL;
-    *bas=*son=yeni;
- }else{
- yeni->sonraki = *bas;
- yeni->onceki = NULL;
- (*bas)->onceki = yeni;
- *bas = yeni;
- }
-
+    struct node *yeni = malloc(sizeof(struct node));
+    yeni->data = veri;
+    if(*bas == NULL){  /// Listede eleman yoksa
+        yeni->sonraki = NULL;
+        yeni->onceki = NULL;
+        *bas=*son=yeni;
+    }else{
+        yeni->sonraki = *bas;
+        yeni->onceki = NULL;
+        (*bas)->onceki = yeni;
+        *bas = yeni;
+    }
 }
-
 void sonaEkle(struct node **bas,struct node **son,char veri){
 struct node *yeni = malloc(sizeof(struct node));
 yeni->data = veri;
@@ -50,7 +45,6 @@ yeni->data = veri;
   (*son) = yeni;
   }
 }
-
 void arayaEkle(struct node **ara,char veri){
     struct node *yeni = malloc(sizeof(struct node));
     yeni->data = veri;
@@ -59,175 +53,219 @@ void arayaEkle(struct node **ara,char veri){
     (*ara)->onceki->sonraki = yeni;
     (*ara)->onceki = yeni;
 }
-
-
 void Listele(struct node *bas){
-struct node *gecici = (struct node*)malloc(sizeof(struct node));
-gecici = bas;
-while(gecici != NULL){
-  printf("%c",gecici->data);
-    gecici = gecici->sonraki;
+    struct node *gecici = (struct node*)malloc(sizeof(struct node));
+    gecici = bas;
+    while(gecici != NULL){
+        printf("%c",gecici->data);
+        gecici = gecici->sonraki;
+    }
 }
-
-}
-
 void Ekrani_Ciz(){
-gotoxy(0,0);
-printf("%c",201);
-for(int i = 1;i<119;i++){
-    gotoxy(i,0);
-    printf("%c",205);
+    gotoxy(0,0);
+    printf("%c",201);
+    for(int i = 1;i<119;i++){
+        gotoxy(i,0);
+        printf("%c",205);
+    }
+    gotoxy(0,119);
+    printf("%c",187);
+
+    gotoxy(1,0);
+    printf("%c",186);
+    gotoxy(1,3);
+    printf("%c",186);
+    gotoxy(1,4);
+    printf("%c",186);
+
+    gotoxy(120,2);
+    printf("%c",186);
+    gotoxy(120,3);
+    printf("%c",186);
+    gotoxy(120,4);
+    printf("%c",186);
+
+    gotoxy(0,5);
+    printf("%c",200);
+    gotoxy(120,5);
+    printf("%c",188);
+
+    for(int i = 2;i<120;i++){
+        gotoxy(i,5);
+        printf("%c",205);
+    }
+
+
+    gotoxy(2,3);
+    printf("F1-Open");
+
+    gotoxy(10,3);
+    printf("F2-Save");
+
+    gotoxy(1,6);
 }
-gotoxy(0,119);
-printf("%c",187);
+void elemansil(struct node **silinecek,struct node **bas,struct node **son,int counter){
 
-gotoxy(1,0);
-printf("%c",186);
-gotoxy(1,3);
-printf("%c",186);
-gotoxy(1,4);
-printf("%c",186);
+    struct node *temp = malloc(sizeof(struct node));
+    temp=*silinecek;
 
+    if((*silinecek)->onceki!=NULL&&(*silinecek)->sonraki!=NULL){
+        (*silinecek)=(*silinecek)->onceki;
+        (*silinecek)->sonraki=temp->sonraki;
+        (*silinecek)->sonraki->onceki=temp->onceki;
+        free(temp);
+    }
+    else if((*silinecek)==(*bas)&&(counter==2)){
+        (*silinecek)=temp->sonraki;
+        (*bas)=(*silinecek);
+        (*bas)->onceki=NULL;
+        (*silinecek)->onceki=NULL;
+        (*silinecek)->sonraki=NULL;
+        (*silinecek)->onceki=NULL;
+        (*bas)=(*son)=(*silinecek);
+        free(temp);
+    }
+    else if((*silinecek)==(*son)&&(counter==2)){
+        (*silinecek)=temp->onceki;
+        (*son)=(*silinecek);
+        (*son)->sonraki=NULL;
+        (*silinecek)->sonraki=NULL;
+        (*silinecek)->onceki=NULL;
+        (*silinecek)->sonraki=NULL;
+        (*bas)=(*son)=(*silinecek);
+        free(temp);
+    }
+    else if((*silinecek)==(*son)&&(counter>2)){
+        (*silinecek)=temp->onceki;
+        (*son)=(*silinecek);
+        (*son)->sonraki=NULL;
+        (*silinecek)->sonraki=NULL;
+        (*silinecek)->onceki=temp->onceki->onceki;
+        (*silinecek)->onceki->sonraki=(*silinecek);
+        free(temp);
+    }
+    else if((*silinecek)==(*bas)&&(counter>2)){
+        (*silinecek)=temp->sonraki;
+        (*bas)=(*silinecek);
+        (*bas)->onceki=NULL;
+        (*silinecek)->onceki=NULL;
+        (*silinecek)->sonraki=temp->sonraki->sonraki;
+        (*silinecek)->sonraki->onceki=(*silinecek);
+        free(temp);
+    }
+    else if (*silinecek == NULL) {
 
+	}
+	else if (*bas == *son) {
+	    (*silinecek)->sonraki=NULL;
+		(*silinecek)->onceki=NULL;
+		free(*silinecek);
+		*silinecek=*bas = *son = NULL;
+	}
 
-gotoxy(120,2);
-printf("%c",186);
-gotoxy(120,3);
-printf("%c",186);
-gotoxy(120,4);
-printf("%c",186);
-
-
-gotoxy(0,5);
-printf("%c",200);
-gotoxy(120,5);
-printf("%c",188);
-
-for(int i = 2;i<120;i++){
-    gotoxy(i,5);
-    printf("%c",205);
 }
+void main(){
+    Ekrani_Ciz(); /// Test Amacli Sonra kaldirabiliriz
+
+    struct node *ilk = NULL;
+    struct node *son = NULL;
+    struct node *gezici = NULL;
+
+    int uzunluk = 0;
+
+    int tus=0; /// basilan tusu alacagimiz degisken
+    int tus2=0; /// ilk tus shift ctrl gibi ise bunu kullanýcaz
+
+    while(1){
+
+        tus = _getch(); /// ilk tusu al
+
+        if(tus==0) /// Kontrol et eger shift ctrl gibi ise ikinci tusu bekle
+            tus2 = _getch();
+
+        if(tus==0 && tus2 == 45) /// kisa cizgi basildiysa kapat
+            exit(0);
 
 
-gotoxy(2,3);
-printf("F1-Open");
+        if(tus > 31 && tus < 127 )  {
 
-gotoxy(10,3);
-printf("F2-Save");
+            if(GetAsyncKeyState(VK_LEFT)){
 
-gotoxy(1,6);
-}
+                if(wherex()>0 && gezici->onceki != NULL){
+                    if(gezici == son && wherex()>uzunluk){
+                        gotoxy(wherex()-1,wherey());
+                    }else{
+                        gezici = gezici->onceki;
+                        gotoxy(wherex()-1,wherey());
+                    }
+                }
 
+            }else if(GetAsyncKeyState(VK_RIGHT)){
+                if(wherex()<120 && gezici->sonraki != NULL){
+                    gotoxy(wherex()+1,wherey());
+                    gezici = gezici->sonraki;
+                }
 
+            }else if(GetAsyncKeyState(VK_UP)){
+                if(wherey()>6){  /// Daha sonra satirlari baglama gelince kontrol geliscek :D
+                    gotoxy(wherex(),wherey()-1);
+                }
+            }else if(GetAsyncKeyState(VK_DOWN)){
+                gotoxy(wherex(),wherey()+1);
 
-void main()
-{
-Ekrani_Ciz(); /// Test Amacli Sonra kaldirabiliriz
-
-struct node *ilk = NULL;
-struct node *son = NULL;
-struct node *gezici = NULL;
-
-int uzunluk = 0;
-
-
-int tus=0; /// basilan tusu alacagimiz degisken
-int tus2=0; /// ilk tus shift ctrl gibi ise bunu kullanýcaz
-
-
-
-while(1){
-
-tus = _getch(); /// ilk tusu al
-
-if(tus==0) /// Kontrol et eger shift ctrl gibi ise ikinci tusu bekle
-  tus2 = _getch();
-
-
-
-
-if(tus==0 && tus2 == 45) /// kisa cizgi basildiysa kapat
-    exit(0);
-
-
-if(tus > 31 && tus < 127 )  {
-
-      if(GetAsyncKeyState(VK_LEFT)){
-
-        if(wherex()>0 && gezici->onceki != NULL){
-              if(gezici == son && wherex()>uzunluk){
-                gotoxy(wherex()-1,wherey());
-              }else{
-            gezici = gezici->onceki;
-            gotoxy(wherex()-1,wherey());
-           }
-        }
-
-      }else if(GetAsyncKeyState(VK_RIGHT)){
-
-        if(wherex()<120 && gezici->sonraki != NULL){
-            gotoxy(wherex()+1,wherey());
-            gezici = gezici->sonraki;
-        }
-
-      }else if(GetAsyncKeyState(VK_UP)){
-
-          if(wherey()>6){  /// Daha sonra satirlari baglama gelince kontrol geliscek :D
-         gotoxy(wherex(),wherey()-1);
-          }
-
-      }else if(GetAsyncKeyState(VK_DOWN)){
-
-         gotoxy(wherex(),wherey()+1);
-
-      }else{
-
-      if(gezici == son){ /// Gezici yeri kontrolu ozel yerler bas ve son ise ona gore islem yap
-        sonaEkle(&ilk,&son,tus);
-        uzunluk++;
-        gezici=son;
-        clrscr();
-        Listele(ilk);
-      } else if(gezici == ilk){
-        int x,y;
-          x = wherex();
-          y = wherey();
-        basaEkle(&ilk,&son,tus);
-        uzunluk++;
-        gezici = ilk;
-        clrscr();
-        Listele(ilk);
-      gotoxy(x,y);
-      }else{
-          int x,y;
-          x = wherex();
-          y = wherey();
-       arayaEkle(&gezici,tus);
-       uzunluk++;
-         clrscr();
-      Listele(ilk);
-      // gezici = gezici->onceki;
-      gotoxy(x+1,y);
-      }
+            }else{
+                if(gezici == son){ /// Gezici yeri kontrolu ozel yerler bas ve son ise ona gore islem yap
+                    sonaEkle(&ilk,&son,tus);
+                    uzunluk++;
+                    gezici=son;
+                    clrscr();
+                    Listele(ilk);
+                } else if(gezici == ilk){
+                    int x,y;
+                    x = wherex();
+                    y = wherey();
+                    basaEkle(&ilk,&son,tus);
+                    uzunluk++;
+                    gezici = ilk;
+                    clrscr();
+                    Listele(ilk);
+                    gotoxy(x,y);
+                }else{
+                    int x,y;
+                    x = wherex();
+                    y = wherey();
+                    arayaEkle(&gezici,tus);
+                    uzunluk++;
+                    clrscr();
+                    Listele(ilk);
+                    // gezici = gezici->onceki;
+                    gotoxy(x+1,y);
+                }
 
    // printf("%c",tus);
 
-    } /// en son else in bitisi
-} /// Tus 31-127 aralik kontrol bitisi
+            } /// en son else in bitisi
+        } /// Tus 31-127 aralik kontrol bitisi
 
-if(tus == 128){   /// C nin noktalisi :D
-    printf("\n");
-    Listele(ilk); /// bagli liste ne durumda kontrol icin
+        if(tus == 128){   /// C nin noktalisi :D
+            printf("\n");
+            Listele(ilk); /// bagli liste ne durumda kontrol icin
+        }
+        if(uzunluk!=0){
+            if(tus == 8){   /// backspace e bastıysa
+                int x,y;
+                x = wherex();
+                y = wherey();
+                elemansil(&gezici,&ilk,&son,uzunluk);
+                uzunluk--;
+                clrscr();
+                Listele(ilk);
+                if(gezici==ilk)
+                    gotoxy(x,y);
+                gotoxy(x-1,y);
+            }
+        }
+
+    } /// While bitis
+    _getch();
 }
-
-
-
-
-} /// While bitis
-
-
-
-
-_getch();
-}
-
