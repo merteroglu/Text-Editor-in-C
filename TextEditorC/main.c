@@ -12,17 +12,18 @@
 ///---------------------------------------------------------///
 
 typedef struct node{
-char data;
-struct node *onceki;
-struct node *sonraki;
+    char data;
+    struct node *onceki;
+    struct node *sonraki;
 };
 
 typedef struct satirlar{
-struct node *ilk;
-struct node *son;
+    struct node *ilk;
+    struct node *son;
+    int satirUzunlugu;
 
-struct satirlar *onceki;
-struct satirlar *sonraki;
+    struct satirlar *onceki;
+    struct satirlar *sonraki;
 
 };
 
@@ -44,18 +45,18 @@ void basaEkle(struct node **bas,struct node **son,char veri){
 }
 
 void sonaEkle(struct node **bas,struct node **son,char veri){
-struct node *yeni = malloc(sizeof(struct node));
-yeni->data = veri;
-  if(*bas == NULL){ /// Liste bos ise
-    yeni->sonraki = NULL;
-    yeni->onceki = NULL;
-    *bas=*son=yeni;
-  }else{
-  yeni->sonraki = NULL;
-  yeni->onceki = (*son);
-  (*son)->sonraki = yeni;
-  (*son) = yeni;
-  }
+    struct node *yeni = malloc(sizeof(struct node));
+    yeni->data = veri;
+    if(*bas == NULL){ /// Liste bos ise
+        yeni->sonraki = NULL;
+        yeni->onceki = NULL;
+        *bas=*son=yeni;
+    }else{
+      yeni->sonraki = NULL;
+      yeni->onceki = (*son);
+      (*son)->sonraki = yeni;
+      (*son) = yeni;
+    }
 }
 
 void arayaEkle(struct node **ara,char veri){
@@ -74,11 +75,11 @@ void Listele(struct satirlar *ilksatir){
 
     while(satirGecici != NULL){
         for(gecici=satirGecici->ilk;gecici!=NULL;gecici=gecici->sonraki){
-          if(gecici->data == 10){
-            printf("\n");
-          }else{
-            printf("%c",gecici->data);
-          }
+            if(gecici->data == 10){
+                printf("\n");
+            }else{
+                printf("%c",gecici->data);
+            }
 
         }
         satirGecici = satirGecici->sonraki;
@@ -199,73 +200,95 @@ void elemansil(struct node **silinecek,struct node **bas,struct node **son,int c
 }
 
 void satirBasaEkle(struct node **ilk,struct node **son,struct satirlar **ilkSatir,struct satirlar **sonSatir){
-struct satirlar *yeni = malloc(sizeof(struct satirlar));
-yeni->ilk = (*ilk);
-yeni->son = (*son);
-if(*ilkSatir == NULL){
-    yeni->onceki = NULL;
-    yeni->sonraki = NULL;
-    (*ilkSatir) = (*sonSatir) = yeni;
-}else{
-yeni->sonraki = (*ilkSatir);
-yeni->onceki = NULL;
-(*ilkSatir)->onceki = yeni;
-(*ilkSatir) = yeni;
-}
-
+    struct satirlar *yeni = malloc(sizeof(struct satirlar));
+    yeni->ilk = (*ilk);
+    yeni->son = (*son);
+    if(*ilkSatir == NULL){
+        yeni->onceki = NULL;
+        yeni->sonraki = NULL;
+        (*ilkSatir) = (*sonSatir) = yeni;
+    }else{
+        yeni->sonraki = (*ilkSatir);
+        yeni->onceki = NULL;
+        (*ilkSatir)->onceki = yeni;
+        (*ilkSatir) = yeni;
+    }
 }
 
 void satirSonaEkle(struct node **ilk,struct node **son,struct satirlar **ilkSatir,struct satirlar **sonSatir){
-struct satirlar *yeni = malloc(sizeof(struct satirlar));
+    struct satirlar *yeni = malloc(sizeof(struct satirlar));
 
-yeni->ilk = (*ilk);
-yeni->son = (*son);
+    yeni->ilk = (*ilk);
+    yeni->son = (*son);
 
-if(*ilkSatir == NULL){
-    yeni->onceki = NULL;
-    yeni->sonraki = NULL;
-    (*ilkSatir) = (*sonSatir) = yeni;
-}else{
-yeni->onceki = *sonSatir;
-yeni->sonraki = NULL;
-(*sonSatir)->sonraki = yeni;
-(*sonSatir) = yeni;
-}
-
+    if(*ilkSatir == NULL){
+        yeni->onceki = NULL;
+        yeni->sonraki = NULL;
+        (*ilkSatir) = (*sonSatir) = yeni;
+    }else{
+        yeni->onceki = *sonSatir;
+        yeni->sonraki = NULL;
+        (*sonSatir)->sonraki = yeni;
+        (*sonSatir) = yeni;
+    }
 }
 
 void satirArdinaEkle(struct node **ilk,struct node **son,struct satirlar **suankiSatir){
-struct satirlar *yeni = malloc(sizeof(struct satirlar));
-yeni->ilk = (*ilk);
-yeni->son = (*son);
+    struct satirlar *yeni = malloc(sizeof(struct satirlar));
+    yeni->ilk = (*ilk);
+    yeni->son = (*son);
 
-yeni->sonraki = (*suankiSatir)->sonraki;
-yeni->onceki = (*suankiSatir);
-(*suankiSatir)->sonraki->onceki = yeni;
-(*suankiSatir)->sonraki = yeni;
-(*suankiSatir) = yeni;
+    yeni->sonraki = (*suankiSatir)->sonraki;
+    yeni->onceki = (*suankiSatir);
+    (*suankiSatir)->sonraki->onceki = yeni;
+    (*suankiSatir)->sonraki = yeni;
+    (*suankiSatir) = yeni;
 }
 
 void imlecTasi(struct satirlar **suanKiSatir,struct node **yeniIlk,struct node **yeniSon,struct node **yeniGezici,int suanKiX,int suanKiY,boolean yukariMi){
 
     if(yukariMi == true){
-    *suanKiSatir = (*suanKiSatir)->onceki;
-    (*yeniIlk) = (*suanKiSatir)->ilk;
-    (*yeniSon) = (*suanKiSatir)->son;
-    (*yeniGezici) = (*yeniIlk);
-   gotoxy(1,wherey()-1);
+        *suanKiSatir = (*suanKiSatir)->onceki;
+        (*yeniIlk) = (*suanKiSatir)->ilk;
+        (*yeniSon) = (*suanKiSatir)->son;
+        (*yeniGezici) = (*yeniIlk);
+        gotoxy(1,wherey()-1);
 
-   for(int i = 1;i<=suanKiX;i++){
-       if((*yeniGezici)->sonraki == NULL || ((*yeniGezici)->data) == 10)
-           break;
+        for(int i = 2;i<=suanKiX;i++){
 
-    (*yeniGezici) = (*yeniGezici)->sonraki;
-     gotoxy(i,wherey());
-   }
+            if((*suanKiSatir)->satirUzunlugu==i){
+                break;
+            }
+
+            if((*yeniGezici)->sonraki == NULL || ((*yeniGezici)->data) == 10)
+                break;
+
+            (*yeniGezici) = (*yeniGezici)->sonraki;
+             gotoxy(i,wherey());
+       }
 
     }else{
+             ///UFUK DEMİR OZEL MULKU ISGAL EDİLDİ
 
-    /// Burasi ufuk demirin özel mülküdür.
+        *suanKiSatir = (*suanKiSatir)->sonraki;
+        (*yeniIlk) = (*suanKiSatir)->ilk;
+        (*yeniSon) = (*suanKiSatir)->son;
+        (*yeniGezici) = (*yeniIlk);
+        gotoxy(1,wherey()+1);
+
+        for(int i = 2;i<=suanKiX;i++){
+
+            if((*suanKiSatir)->satirUzunlugu==i){
+                break;
+            }
+            if((*yeniGezici)->sonraki == NULL || ((*yeniGezici)->data) == 10)
+                break;
+
+            (*yeniGezici) = (*yeniGezici)->sonraki;
+            gotoxy(i,wherey());
+
+       }
+
     }
 
 }
@@ -279,12 +302,12 @@ void main(){
     struct satirlar *ilkSatir = NULL;
     struct satirlar *sonSatir = NULL;
 
-   satirBasaEkle(&ilk,&son,&ilkSatir,&sonSatir);
+    satirBasaEkle(&ilk,&son,&ilkSatir,&sonSatir);
 
 
     struct satirlar *geziciSatir = ilkSatir;
+    geziciSatir->satirUzunlugu = 0;
 
-    int uzunluk = 0;
 
     int tus=0; /// basilan tusu alacagimiz degisken
     int tus2=0; /// ilk tus shift ctrl gibi ise bunu kullanycaz
@@ -305,7 +328,7 @@ void main(){
             if(GetAsyncKeyState(VK_LEFT)){
 
                 if(wherex()>0 && gezici->onceki != NULL){
-                    if(gezici == son && wherex()>uzunluk){
+                    if(gezici == son && wherex()>geziciSatir->satirUzunlugu){
                         gotoxy(wherex()-1,wherey());
                     }else{
                         gezici = gezici->onceki;
@@ -336,13 +359,13 @@ void main(){
                 if(geziciSatir == sonSatir)
                     continue;
 
-                gotoxy(wherex(),wherey()+1);
+              imlecTasi(&geziciSatir,&ilk,&son,&gezici,wherex(),wherey(),false);
 
             }else{
 
                 if(ilk==NULL && son==NULL){
                     sonaEkle(&ilk,&son,tus);
-                    uzunluk++;
+                    geziciSatir->satirUzunlugu++;
                     gezici=son;
                     geziciSatir->ilk = ilk ;
                     geziciSatir->son = son;
@@ -351,30 +374,41 @@ void main(){
                     continue;
                 }
 
-                if(gezici == son){ /// Gezici yeri kontrolu ozel yerler bas ve son ise ona gore islem yap
+                if(gezici == son && gezici->data != 10){ /// Gezici yeri kontrolu ozel yerler bas ve son ise ona gore islem yap
                     sonaEkle(&ilk,&son,tus);
-                    uzunluk++;
+                    geziciSatir->satirUzunlugu++;
                     gezici=son;
                     geziciSatir->son = son;
                     clrscr();
                     Listele(ilkSatir);
-                } else if(gezici == ilk){
+                } else if(gezici == ilk && gezici->data != 10){
                     int x,y;
                     x = wherex();
                     y = wherey();
                     basaEkle(&ilk,&son,tus);
-                    uzunluk++;
+                    geziciSatir->satirUzunlugu++;
                     gezici = ilk;
                     geziciSatir->ilk = ilk;
                     clrscr();
                     Listele(ilkSatir);
                     gotoxy(x,y);
+                }else if(gezici == ilk && gezici->data == 10){
+                    int x,y;
+                    x = wherex();
+                    y = wherey();
+                    basaEkle(&ilk,&son,tus);
+                    geziciSatir->satirUzunlugu++;
+                    geziciSatir->ilk = ilk;
+                    clrscr();
+                    Listele(ilkSatir);
+                    gotoxy(x+1,y);
+
                 }else{
                     int x,y;
                     x = wherex();
                     y = wherey();
                     arayaEkle(&gezici,tus);
-                    uzunluk++;
+                    geziciSatir->satirUzunlugu++;
                     clrscr();
                     Listele(ilkSatir);
                     // gezici = gezici->onceki;
@@ -386,34 +420,52 @@ void main(){
             } /// en son else in bitisi
         } /// Tus 31-127 aralik kontrol bitisi
 
-
-        if(uzunluk!=0){
+        if(geziciSatir->satirUzunlugu != 0){
             if(tus == 8){   /// backspace e bastıysa
                 int x,y;
                 x = wherex();
                 y = wherey();
-                elemansil(&gezici,&ilk,&son,uzunluk);
-                uzunluk--;
+                elemansil(&gezici,&ilk,&son,geziciSatir->satirUzunlugu);
+                geziciSatir->satirUzunlugu--;
                 clrscr();
                 Listele(ilkSatir);
                 if(gezici==ilk)
                     gotoxy(x,y);
-                gotoxy(x-1,y);
+                else
+                    gotoxy(x-1,y);
             }
         }
 
          if(tus == 13){ ///Enter basildiysa
-            if(gezici == son){
+            if(gezici == son && geziciSatir->sonraki == NULL){
                 sonaEkle(&ilk,&son,10);
+                geziciSatir->satirUzunlugu++;
+                geziciSatir->son = son;
                 ilk = son = gezici = NULL;
                 satirSonaEkle(&ilk,&son,&ilkSatir,&sonSatir);
                 geziciSatir = sonSatir;
                 gotoxy(1,wherey()+1);
-                uzunluk = 0;
-            }
+                geziciSatir->satirUzunlugu = 0;
+            }else if(gezici == son && geziciSatir->sonraki != NULL){
+                int tmpx,tmpy;
+                tmpx = wherex();
+                tmpy = wherey();
+                ilk = son = gezici = NULL;
+                satirArdinaEkle(&ilk,&son,&geziciSatir);
 
+                geziciSatir->satirUzunlugu = 0;
+
+                sonaEkle(&ilk,&son,10);
+                geziciSatir->satirUzunlugu++;
+                gezici=son;
+                geziciSatir->ilk = ilk ;
+                geziciSatir->son = son;
+                clrscr();
+                Listele(ilkSatir);
+                gotoxy(1,tmpy+1);
 
             }
+        }
 
     } /// While bitis
     _getch();
