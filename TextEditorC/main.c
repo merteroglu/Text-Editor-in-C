@@ -149,7 +149,7 @@ int tmpx = wherex(); int tmpy = wherey();
         free(silincek);
         satirSil();
 
-    }else if(gezici == geziciSatir->ilk && gezici->veri != 10){
+    }else if(gezici == geziciSatir->ilk && gezici != NULL && gezici->veri != 10){
         silincek = gezici;
         if(geziciSatir->satirUzunlugu != 1){
             silincek->sonraki->onceki = NULL;
@@ -334,6 +334,7 @@ int tmpx = wherex(); int tmpy = wherey();
             }else{
                geziciSatir = geziciSatir->onceki;
                gezici = geziciSatir->ilk;
+               gotoxy(1,tmpy-1);
                for(int i = 1;i<tmpx;i++){
                 gezici = gezici->sonraki;
                 gotoxy(i+1,tmpy-1);
@@ -353,6 +354,7 @@ int tmpx = wherex(); int tmpy = wherey();
             }else{
                geziciSatir = geziciSatir->sonraki;
                gezici = geziciSatir->ilk;
+               gotoxy(1,tmpy+1);
                for(int i = 1;i<tmpx;i++){
                 gezici = gezici->sonraki;
                 gotoxy(i+1,tmpy+1);
@@ -407,11 +409,14 @@ int main()
     }
 
     if(tus == 8){
+       if(geziciSatir == ilkSatir && geziciSatir->ilk == NULL)
+       continue;
+
       if(gezici == NULL && geziciSatir != ilkSatir && gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir != ilkSatir){
         satirSil();
-      }else if(gezici->veri == 10 && gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir != ilkSatir){
+      }else if(gezici->veri == 10 && gezici != NULL && gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir != ilkSatir){
         satirSil();
-      }else{
+      }else if(gezici != NULL){
         harfSil();
       }
 
@@ -433,11 +438,16 @@ int main()
 
             satirSonaEkle();
           }
-       }else if(geziciSatir == sonSatir && gezici==geziciSatir->son){
-          if(gezici->veri != 10)
-            harfSonaEkle(10);
+       }else if(geziciSatir == sonSatir && gezici == geziciSatir->son){
 
+
+          if(gezici == NULL && geziciSatir->son == NULL && geziciSatir->ilk == NULL){
+            harfBasaEkle(10);
+          }else if(gezici->veri != 10 && geziciSatir->ilk != NULL){
+            harfSonaEkle(10);
+          }
           satirSonaEkle();
+
        }else if(geziciSatir != ilkSatir && geziciSatir != sonSatir && gezici == geziciSatir->son){
           if(gezici->veri !=10)
             harfSonaEkle(10);
