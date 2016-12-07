@@ -424,6 +424,49 @@ void oku(){
 	fclose(dosya);
 	gotoxy(wherex()-1,wherey());
 }
+void Ekrani_Ciz(){
+    gotoxy(0,0);
+    printf("%c",201);
+    for(int i = 1;i<119;i++){
+        gotoxy(i,0);
+        printf("%c",205);
+    }
+    gotoxy(0,119);
+    printf("%c",187);
+
+    gotoxy(1,0);
+    printf("%c",186);
+    gotoxy(1,3);
+    printf("%c",186);
+    gotoxy(1,4);
+    printf("%c",186);
+
+    gotoxy(120,2);
+    printf("%c",186);
+    gotoxy(120,3);
+    printf("%c",186);
+    gotoxy(120,4);
+    printf("%c",186);
+
+    gotoxy(0,5);
+    printf("%c",200);
+    gotoxy(120,5);
+    printf("%c",188);
+
+    for(int i = 2;i<120;i++){
+        gotoxy(i,5);
+        printf("%c",205);
+    }
+
+
+    gotoxy(2,3);
+    printf("F1-Open");
+
+    gotoxy(10,3);
+    printf("F2-Save");
+
+    gotoxy(1,6);
+}
 
 int main()
 {
