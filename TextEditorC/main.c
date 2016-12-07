@@ -367,6 +367,7 @@ int tmpx = wherex(); int tmpy = wherey();
 
 void kaydet(){
 
+
     FILE * dosya;
 
 	if ((dosya = fopen(dosyaYolu, "w")) == NULL) {
@@ -398,18 +399,23 @@ void oku(){
 	while ((c = getc(dosya)) != EOF) {
 		 if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
            harfBasaEkle(c);
-        }/*else if(gezici == geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu!=0){
-          harfBasaEkle(c);
-        }*/else if(gezici == geziciSatir->son){
-        if(c=='\n')
-            harfSonaEkle(c);
-          harfSonaEkle(c);
-        }/*else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son){
-          harfArayaEkle(c);
-        }*/
-	}
+        }else if(gezici == geziciSatir->son){
+            if(c=='\n'){
+              harfSonaEkle(c);
+              }else if(geziciSatir == ilkSatir && geziciSatir == sonSatir){
+                satirSonaEkle();
+              }else if(geziciSatir != ilkSatir && geziciSatir != sonSatir){
+                satirArayaEkle();
+              }else if(geziciSatir != ilkSatir && geziciSatir == sonSatir){
+                satirSonaEkle();
+              }
+
+            }
+
+        }
 
 	fclose(dosya);
+	gotoxy(wherex()-1,wherey());
 }
 
 int main()
@@ -434,10 +440,9 @@ int main()
     }else if(GetAsyncKeyState(VK_RIGHT)){
         imlecTasi('R');
         continue;
-    }else if(GetAsyncKeyState(VK_UP)){////////////////////////////////////
-        if(gezici->sonraki!=NULL){
+    }else if(GetAsyncKeyState(VK_UP)){
         imlecTasi('U');
-        continue;}
+        continue;
     }else if(GetAsyncKeyState(VK_DOWN)){
        imlecTasi('D');
        continue;
@@ -476,9 +481,8 @@ int main()
       }*/
 
     }
-    if(gezici == geziciSatir->son&&geziciSatir->satirUzunlugu==120){/////////////////////////////////
+    if(gezici == geziciSatir->son && geziciSatir->satirUzunlugu==120){/////////////////////////////////
         satirArayaEkle();
-
     }
 
 
@@ -524,7 +528,7 @@ int main()
 
     }
         if(tus==27){
-            //kaydet();
+           // kaydet();
             oku();
         }
         tus = 0;
