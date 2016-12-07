@@ -399,16 +399,23 @@ void oku(){
 	while ((c = getc(dosya)) != EOF) {
 		 if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
            harfBasaEkle(c);
-        }else if(gezici == geziciSatir->son){
-            if(c=='\n'){
-              harfSonaEkle(c);
-              }else if(geziciSatir == ilkSatir && geziciSatir == sonSatir){
-                satirSonaEkle();
-              }else if(geziciSatir != ilkSatir && geziciSatir != sonSatir){
-                satirArayaEkle();
-              }else if(geziciSatir != ilkSatir && geziciSatir == sonSatir){
-                satirSonaEkle();
-              }
+        }
+        else if(gezici == geziciSatir->son){
+                if(c=='\n'){
+                    harfSonaEkle(c);
+                    if(geziciSatir == ilkSatir && geziciSatir == sonSatir){
+                        satirSonaEkle();
+                    }else if(geziciSatir != ilkSatir && geziciSatir != sonSatir){
+                        satirArayaEkle();
+                    }else if(geziciSatir != ilkSatir && geziciSatir == sonSatir){
+                        satirSonaEkle();
+                    }
+
+                }
+                else{
+                    harfSonaEkle(c);
+                }
+
 
             }
 
