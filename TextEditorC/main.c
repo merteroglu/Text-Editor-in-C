@@ -7,6 +7,7 @@
 #define dosyaYolu "test2.txt"
 struct harf{
     int veri;
+    int renk;
     struct harf *onceki;
     struct harf *sonraki;
 }*gezici;
@@ -233,19 +234,19 @@ void satirArayaEkle(){
     struct satir *yeni = malloc(sizeof(struct satir));
 int tmpx = wherex(); int tmpy = wherey();
     if(geziciSatir->sonraki != NULL){
-      yeni->ilk = NULL;
-      yeni->son = NULL;
-      gezici = NULL;
-      yeni->satirUzunlugu = 0;
+        yeni->ilk = NULL;
+        yeni->son = NULL;
+        gezici = NULL;
+        yeni->satirUzunlugu = 0;
 
-      yeni->onceki = geziciSatir;
-      yeni->sonraki = geziciSatir->sonraki;
-      geziciSatir->sonraki->onceki = yeni;
-      geziciSatir->sonraki = yeni;
-      geziciSatir = yeni;
-      harfBasaEkle(10);
-       ekranaBas();
-       gotoxy(1,tmpy+1);
+        yeni->onceki = geziciSatir;
+        yeni->sonraki = geziciSatir->sonraki;
+        geziciSatir->sonraki->onceki = yeni;
+        geziciSatir->sonraki = yeni;
+        geziciSatir = yeni;
+        harfBasaEkle(10);
+        ekranaBas();
+        gotoxy(1,tmpy+1);
 
      // imlecTasi('D');
     }
@@ -288,10 +289,21 @@ void ekranaBas(){
 
     while(geciciSatir != NULL){
        for(geciciHarf=geciciSatir->ilk;geciciHarf!=NULL;geciciHarf=geciciHarf->sonraki){
-          if(geciciHarf->veri == 10)
-             printf("\n");
-           else
-             printf("%c",geciciHarf->veri);
+            if(geciciHarf->veri == 10){
+                textbackground(WHITE);
+                printf("\n");
+            }
+
+            else if (geciciHarf->renk==1){
+                textbackground(LIGHTGRAY);
+                printf("%c",geciciHarf->veri);
+                textbackground(WHITE);
+            }
+            else{
+                textbackground(WHITE);
+                printf("%c",geciciHarf->veri);
+            }
+
        }
        geciciSatir = geciciSatir->sonraki;
     }
@@ -386,6 +398,7 @@ void kaydet(){
     }
     fclose(dosya);
 }
+
 void oku(){
 
     FILE * dosya;
@@ -424,6 +437,7 @@ void oku(){
 	fclose(dosya);
 	gotoxy(wherex()-1,wherey());
 }
+
 void Ekrani_Ciz(){
     gotoxy(0,0);
     printf("%c",201);
@@ -470,9 +484,12 @@ void Ekrani_Ciz(){
 
 int main()
 {
+   Ekrani_Ciz();
     _setcursortype(_SOLIDCURSOR);
-   textbackground(WHITE);
-   textcolor(BLACK);
+    textbackground(WHITE);
+    textcolor(BLACK);
+    ekranaBas();
+    Ekrani_Ciz();
     int tus;
 
     satirBasaEkle();
