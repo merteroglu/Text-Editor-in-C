@@ -295,7 +295,7 @@ void ekranaBas(){
             }
 
             else if (geciciHarf->renk==1){
-                textbackground(LIGHTGRAY);
+                textbackground(LIGHTBLUE);
                 printf("%c",geciciHarf->veri);
                 textbackground(WHITE);
             }
@@ -572,7 +572,6 @@ int main()
           }
        }else if(geziciSatir == sonSatir && gezici == geziciSatir->son){
 
-
           if(gezici == NULL && geziciSatir->son == NULL && geziciSatir->ilk == NULL){
             harfBasaEkle(10);
           }else if(gezici->veri != 10 && geziciSatir->ilk != NULL){
@@ -588,8 +587,6 @@ int main()
        }
        else if(gezici==NULL&&geziciSatir->satirUzunlugu==0){
             harfSonaEkle('\n');
-
-
        }
 
 
