@@ -12,6 +12,8 @@
 #define dosyaYolu "test2.txt"
 
 int boyaliKarakter = 0;
+char *buf;
+int i=0;
 
 struct harf{
     int veri;
@@ -636,6 +638,10 @@ int main()
 
     if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_LEFT) ){
      imlecTasi('L',true);
+     buf=(int*)malloc(sizeof(char));
+     buf[i]=gezici->veri;
+     i++;
+     imlecTasi('L',false);
     continue;
     }else if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_RIGHT)){
      imlecTasi('R',true);
@@ -647,7 +653,20 @@ int main()
      imlecTasi('D',true);
      continue;
     }else if(GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_C)){
-
+         /*for(int a = 0;a<i;a++){
+              tus = buf[a];
+             if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
+               harfBasaEkle(tus);
+            }else if(gezici == geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu!=0 && geziciSatir->satirUzunlugu<119){
+              harfBasaEkle(tus);
+            }else if(gezici == geziciSatir->son && geziciSatir->satirUzunlugu <119){
+              harfSonaEkle(tus);
+            }else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu <119){
+              harfArayaEkle(tus);
+            }
+         }*/
+         //free(buf);
+         //i=0;
     }else if(GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_V)){
 
     }else if(GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_X)){
