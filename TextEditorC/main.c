@@ -716,21 +716,27 @@ int main()
             gotoxy(1,1);
 
           }else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son){ /// Test Asamasi
-            harfArayaEkle(10);
 
             int tmpLenght = geziciSatir->satirUzunlugu-wherex();
-            char buf[tmpLenght];
-            _gettext(wherex(),wherey(),geziciSatir->satirUzunlugu+1,wherey(),buf);
+            char buf[tmpLenght*2];
+            int xx = wherex(); int yy = wherey();
+            _gettext(xx,yy,geziciSatir->satirUzunlugu,yy,buf);
+            harfArayaEkle(10);
+
+                while(gezici != NULL){
+                    gezici = gezici->sonraki;
+                    harfSil();
+                 }
+
+        if(geziciSatir != sonSatir){
+            satirArayaEkle();
+        }else if(geziciSatir == sonSatir){
+            satirSonaEkle();
+
+        }
 
 
-            while(gezici != NULL){
-               harfSil();
-               gezici = gezici->sonraki;
-            }
-
-                satirArayaEkle();
-
-      for(int i = 0;i<tmpLenght;i++){
+      for(int i = 0;i<=tmpLenght+4;i += 2){
           tus = buf[i];
          if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
            harfBasaEkle(tus);
@@ -743,7 +749,7 @@ int main()
         }
       }
 
-
+        gotoxy(tmpLenght+1,yy+1);
 
 
           }else if(geziciSatir == sonSatir && gezici == geziciSatir->son && gezici !=NULL ){
@@ -771,9 +777,45 @@ int main()
             harfSonaEkle(10);
 
             satirArayaEkle();
-       }
-       else if(gezici==NULL&&geziciSatir->satirUzunlugu==0){
+       }else if(gezici==NULL&&geziciSatir->satirUzunlugu==0){
             harfSonaEkle('\n');
+       }else if(geziciSatir != ilkSatir && gezici !=NULL && gezici != geziciSatir->ilk && gezici != geziciSatir->son){
+
+        int tmpLenght = geziciSatir->satirUzunlugu-wherex();
+            char buf[(tmpLenght+1)*2];
+            int xx = wherex(); int yy = wherey();
+            _gettext(xx,yy,geziciSatir->satirUzunlugu,yy,buf);
+            harfArayaEkle(10);
+
+                while(gezici != NULL){
+                    gezici = gezici->sonraki;
+                    harfSil();
+                 }
+
+         if(geziciSatir != sonSatir){
+            satirArayaEkle();
+
+         }else if(geziciSatir == sonSatir){
+            satirSonaEkle();
+
+         }
+
+
+      for(int i = 0;i<=tmpLenght+4;i += 2){
+          tus = buf[i];
+         if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
+           harfBasaEkle(tus);
+        }else if(gezici == geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu!=0 && geziciSatir->satirUzunlugu<119){
+          harfBasaEkle(tus);
+        }else if(gezici == geziciSatir->son && geziciSatir->satirUzunlugu <119){
+          harfSonaEkle(tus);
+        }else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu <119){
+          harfArayaEkle(tus);
+        }
+      }
+
+        gotoxy(tmpLenght+1,yy+1);
+
        }
 
 
