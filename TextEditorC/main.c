@@ -12,7 +12,7 @@
 #define dosyaYolu "test2.txt"
 
 int boyaliKarakter = 0;
-char *buf;
+char buf[100];
 int i=0;
 
 struct harf{
@@ -638,10 +638,10 @@ int main()
 
     if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_LEFT) ){
      imlecTasi('L',true);
-     buf=(int*)malloc(sizeof(char));
+     //buf=(int*)malloc(sizeof(char));
      buf[i]=gezici->veri;
      i++;
-     imlecTasi('L',false);
+
     continue;
     }else if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_RIGHT)){
      imlecTasi('R',true);
@@ -653,7 +653,7 @@ int main()
      imlecTasi('D',true);
      continue;
     }else if(GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_C)){
-         /*for(int a = 0;a<i;a++){
+        printf("evet"); /*for(int a = 0;a<i;a++){
               tus = buf[a];
              if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
                harfBasaEkle(tus);
@@ -841,7 +841,24 @@ int main()
     }
         if(tus==27){
            // kaydet();
-            oku();
+            //oku();
+
+            for(int a = i-1;0<=a;a--){
+              //printf("%d.harf %c\n",a,buf[a]);
+             tus = buf[a];
+             if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
+               harfBasaEkle(buf[a]);
+            }else if(gezici == geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu!=0 && geziciSatir->satirUzunlugu<119){
+              harfBasaEkle(buf[a]);
+            }else if(gezici == geziciSatir->son && geziciSatir->satirUzunlugu <119){
+              harfSonaEkle(buf[a]);
+            }else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu <119){
+              harfArayaEkle(buf[a]);
+            }
+
+            }
+              free(buf);
+         i=0;
         }
         tus = 0;
 
