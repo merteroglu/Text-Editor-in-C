@@ -12,9 +12,7 @@
 #define dosyaYolu "test2.txt"
 
 int boyaliKarakter = 0;
-char buf[100];
-int i=0,secim;
-
+char *buf;
 struct harf{
     int veri;
     int renk;
@@ -615,10 +613,136 @@ void Ekrani_Ciz(){
     gotoxy(1,6);
 }
 
+void ciftTuslar(char tip){
+
+static int ibuf;
+
+int tmpX = wherex(); int tmpY = wherey();
+
+    if(tip == 'c'){
+
+    if(boyaliKarakter == 0){
+       return;
+    }
+
+    free(buf);
+    buf = (char*)malloc(sizeof(char)*boyaliKarakter);
+
+    struct satir *tmpSatir = ilkSatir;
+    struct harf *tmpHarf;
+
+    ibuf = 0;
+    while(tmpSatir != NULL){
+       for(tmpHarf=tmpSatir->ilk;tmpHarf!=NULL;tmpHarf=tmpHarf->sonraki){
+
+         if(tmpHarf->renk == 1){
+            buf[ibuf] = tmpHarf->veri;
+            ibuf++;
+         }
+
+       }
+       tmpSatir = tmpSatir->sonraki;
+    }
+
+
+    } /// end of c
+
+
+    if(tip == 'v'){
+
+        for(int i = 0;i<ibuf;i++){
+		 if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
+           harfBasaEkle(buf[i]);
+        }
+        else if(gezici == geziciSatir->son){
+                if(buf[i]=='\n'){
+                    harfSonaEkle(buf[i]);
+                    if(geziciSatir == ilkSatir && geziciSatir == sonSatir){
+                        satirSonaEkle();
+                    }else if(geziciSatir != ilkSatir && geziciSatir != sonSatir){
+                        satirArayaEkle();
+                    }else if(geziciSatir != ilkSatir && geziciSatir == sonSatir){
+                        satirSonaEkle();
+                    }
+
+                }
+                else{
+                    harfSonaEkle(buf[i]);
+                }
+
+
+            }
+
+        }
+
+
+    } /// end of v
+
+
+    if(tip == 'x'){
+
+        if(boyaliKarakter == 0){
+            return;
+        }
+
+        free(buf);
+        buf = (char*)malloc(sizeof(char)*boyaliKarakter);
+
+        struct satir *tmpSatir = ilkSatir;
+        struct harf *tmpHarf;
+
+        ibuf = 0;
+        while(tmpSatir != NULL){
+            for(tmpHarf=tmpSatir->ilk; tmpHarf!=NULL; tmpHarf=tmpHarf->sonraki){
+
+                if(tmpHarf->renk == 1){
+                    buf[ibuf] = tmpHarf->veri;
+                    ibuf++;
+                }
+
+            }
+            tmpSatir = tmpSatir->sonraki;
+        }
+
+        tmpSatir = ilkSatir;
+
+        while(tmpSatir != NULL){
+
+            for(tmpHarf = tmpSatir->ilk;tmpHarf != NULL;tmpHarf = tmpHarf->sonraki){
+
+                if(tmpHarf->renk == 1){
+                   gezici = tmpHarf;
+
+                    if(geziciSatir == ilkSatir && geziciSatir->ilk == NULL)
+                        continue;
+
+        if(gezici == NULL && geziciSatir != ilkSatir && gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir != ilkSatir){
+            satirSil();
+        }else if(gezici->veri == 10 && gezici != NULL && gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir != ilkSatir){
+            satirSil();
+        }else if(gezici != NULL){
+            harfSil();
+        }
+
+
+            }
+
+      }
+            tmpSatir = tmpSatir->sonraki;
+}
+
+    gotoxy(tmpX,tmpY);
+
+    } /// end of x
+
+
+}
 
 int main()
 {
-   Ekrani_Ciz();
+
+
+    Ekrani_Ciz();
     _setcursortype(_SOLIDCURSOR);
     textbackground(WHITE);
     textcolor(BLACK);
@@ -633,55 +757,29 @@ int main()
 
     tus = _getch();
 
-
-    if(tus>31 && tus<127 ){
+    if(tus>31 && tus<127 || ( tus == 3 || tus == 22 || tus == 24 ) ){
 
     if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_LEFT) ){
-        if(gezici==NULL)
-            continue;
-
-        secim=0;
-        imlecTasi('L',true);
-        //buf=(int*)malloc(sizeof(char));
-        buf[i]=gezici->veri;
-        i++;
-
-        continue;
-
+     imlecTasi('L',true);
+    continue;
     }else if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_RIGHT)){
-        if(gezici==NULL)
-            continue;
-        secim=1;
-        imlecTasi('R',true);
-        buf[i]=gezici->veri;
-        i++;
-        continue;
-
+     imlecTasi('R',true);
+     continue;
     }else if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_UP)){
      imlecTasi('U',true);
      continue;
     }else if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_DOWN)){
      imlecTasi('D',true);
      continue;
-    }else if(GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_C)){
-        printf("evet"); /*for(int a = 0;a<i;a++){
-              tus = buf[a];
-             if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
-               harfBasaEkle(tus);
-            }else if(gezici == geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu!=0 && geziciSatir->satirUzunlugu<119){
-              harfBasaEkle(tus);
-            }else if(gezici == geziciSatir->son && geziciSatir->satirUzunlugu <119){
-              harfSonaEkle(tus);
-            }else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu <119){
-              harfArayaEkle(tus);
-            }
-         }*/
-         //free(buf);
-         //i=0;
-    }else if(GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_V)){
-
-    }else if(GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_X)){
-
+    }else if(tus == 3){
+    ciftTuslar('c');
+    continue;
+    }else if(tus == 22){
+    ciftTuslar('v');
+    continue;
+    }else if(tus == 24){
+    ciftTuslar('x');
+    continue;
     }else if(GetAsyncKeyState(VK_LEFT)){
         imlecTasi('L',false);
         continue;
@@ -719,14 +817,6 @@ int main()
       }else if(gezici != NULL){
         harfSil();
       }
-      /*else if(gezici!=NULL&&gezici==geziciSatir->ilk&&geziciSatir->onceki!=NULL&&geziciSatir->onceki->satirUzunlugu==120){
-        if(geziciSatir->satirUzunlugu==1)
-            harfSil();
-        else{
-            satirSil();
-            gotoxy(120,wherey()-1);
-        }
-      }*/
 
     }
 
@@ -851,177 +941,8 @@ int main()
 
     }
         if(tus==27){
-            // kaydet();
-            //oku();
-            if(secim==0){
-                for(int a = i-1;0<=a;a--){
-                    //printf("%d.harf %c\n",a,buf[a]);
-                    tus = buf[a];
-                    if(tus=='\n'){
-
-                        if(geziciSatir == ilkSatir){
-                            if(geziciSatir != sonSatir && gezici == geziciSatir->son){
-
-                                if(gezici->veri != 10)
-                                harfSonaEkle(10);
-
-                                satirArayaEkle();
-
-                        }else if(gezici == geziciSatir->ilk && gezici != NULL){
-
-                            satirBasaEkle();
-                            harfBasaEkle(10);
-                            gotoxy(1,1);
-
-                        }else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son){ /// Test Asamasi
-
-                            int tmpLenght = geziciSatir->satirUzunlugu-wherex();
-                            char buf[tmpLenght*2];
-                            int xx = wherex(); int yy = wherey();
-                            _gettext(xx,yy,geziciSatir->satirUzunlugu,yy,buf);
-                            harfArayaEkle(10);
-
-                            while(gezici != NULL){
-                                gezici = gezici->sonraki;
-                                harfSil();
-                            }
-
-                            if(geziciSatir != sonSatir){
-                                satirArayaEkle();
-                            }else if(geziciSatir == sonSatir){
-                                satirSonaEkle();
-
-                            }
-
-
-                        for(int i = 0;i<=tmpLenght+4;i += 2){
-                            tus = buf[i];
-                            if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
-                                harfBasaEkle(tus);
-                            }else if(gezici == geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu!=0 && geziciSatir->satirUzunlugu<119){
-                              harfBasaEkle(tus);
-                            }else if(gezici == geziciSatir->son && geziciSatir->satirUzunlugu <119){
-                              harfSonaEkle(tus);
-                            }else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu <119){
-                              harfArayaEkle(tus);
-                            }
-                        }
-
-                        gotoxy(tmpLenght+1,yy+1);
-
-
-                        }else if(geziciSatir == sonSatir && gezici == geziciSatir->son && gezici !=NULL ){
-
-                            if(gezici->veri != 10)
-                                harfSonaEkle(10);
-
-                            satirSonaEkle();
-
-                        }else if(geziciSatir == sonSatir && gezici == NULL){
-                            harfBasaEkle(10);
-                            satirSonaEkle();
-                        }
-                        }else if(geziciSatir == sonSatir && gezici == geziciSatir->son){
-
-                            if(gezici == NULL && geziciSatir->son == NULL && geziciSatir->ilk == NULL){
-                                harfBasaEkle(10);
-                            }else if(gezici->veri != 10 && geziciSatir->ilk != NULL){
-                                harfSonaEkle(10);
-                            }
-                            satirSonaEkle();
-
-                        }else if(geziciSatir != ilkSatir && geziciSatir != sonSatir && gezici == geziciSatir->son){
-                            if(gezici->veri !=10)
-                                harfSonaEkle(10);
-
-                            satirArayaEkle();
-                        }else if(gezici==NULL&&geziciSatir->satirUzunlugu==0){
-                            harfSonaEkle('\n');
-                        }else if(geziciSatir != ilkSatir && gezici !=NULL && gezici != geziciSatir->ilk && gezici != geziciSatir->son){
-
-                            int tmpLenght = geziciSatir->satirUzunlugu-wherex();
-                            char buf[(tmpLenght+1)*2];
-                            int xx = wherex(); int yy = wherey();
-                            _gettext(xx,yy,geziciSatir->satirUzunlugu,yy,buf);
-                            harfArayaEkle(10);
-
-                            while(gezici != NULL){
-                                gezici = gezici->sonraki;
-                                harfSil();
-                            }
-
-                            if(geziciSatir != sonSatir){
-                                satirArayaEkle();
-
-                            }else if(geziciSatir == sonSatir){
-                                satirSonaEkle();
-
-                            }
-
-
-                            for(int i = 0;i<=tmpLenght+4;i += 2){
-                                tus = buf[i];
-                                if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
-                                    harfBasaEkle(tus);
-                                }else if(gezici == geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu!=0 && geziciSatir->satirUzunlugu<119){
-                                    harfBasaEkle(tus);
-                                }else if(gezici == geziciSatir->son && geziciSatir->satirUzunlugu <119){
-                                    harfSonaEkle(tus);
-                                }else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu <119){
-                                    harfArayaEkle(tus);
-                                }
-                            }
-
-                            gotoxy(tmpLenght+1,yy+1);
-
-                        }
-
-
-
-                    }
-                        if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
-                           harfBasaEkle(buf[a]);
-                        }else if(gezici == geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu!=0 && geziciSatir->satirUzunlugu<119){
-                          harfBasaEkle(buf[a]);
-                        }else if(gezici == geziciSatir->son && geziciSatir->satirUzunlugu <119){
-                          harfSonaEkle(buf[a]);
-                        }else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu <119){
-                          harfArayaEkle(buf[a]);
-                        }
-
-                }
-                free(buf);
-                i=0;
-            }
-            else if(secim==1){
-            for(int a = 0;a<i;a++){
-                  //printf("%d.harf %c\n",a,buf[a]);
-                tus = buf[a];
-                if(tus=='\n'){
-
-                    if(geziciSatir == ilkSatir && geziciSatir == sonSatir){
-                        satirSonaEkle();
-                    }else if(geziciSatir != ilkSatir && geziciSatir != sonSatir){
-                        satirArayaEkle();
-                    }else if(geziciSatir != ilkSatir && geziciSatir == sonSatir){
-                        satirSonaEkle();
-                    }
-
-                }
-                    if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
-                       harfBasaEkle(buf[a]);
-                    }else if(gezici == geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu!=0 && geziciSatir->satirUzunlugu<119){
-                      harfBasaEkle(buf[a]);
-                    }else if(gezici == geziciSatir->son && geziciSatir->satirUzunlugu <119){
-                      harfSonaEkle(buf[a]);
-                    }else if(gezici != geziciSatir->ilk && gezici != geziciSatir->son && geziciSatir->satirUzunlugu <119){
-                      harfArayaEkle(buf[a]);
-                    }
-
-                }
-                free(buf);
-                i=0;
-            }
+           // kaydet();
+            oku();
         }
         tus = 0;
 
