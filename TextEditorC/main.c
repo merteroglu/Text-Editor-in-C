@@ -692,6 +692,8 @@ int tmpX = wherex(); int tmpY = wherey();
         struct harf *tmpHarf;
 
         ibuf = 0;
+
+
         while(tmpSatir != NULL){
             for(tmpHarf=tmpSatir->ilk; tmpHarf!=NULL; tmpHarf=tmpHarf->sonraki){
 
@@ -704,7 +706,7 @@ int tmpX = wherex(); int tmpY = wherey();
             tmpSatir = tmpSatir->sonraki;
         }
 
-        tmpSatir = ilkSatir;
+        tmpSatir = sonSatir;
 
         while(tmpSatir != NULL){
 
@@ -712,9 +714,10 @@ int tmpX = wherex(); int tmpY = wherey();
 
                 if(tmpHarf->renk == 1){
                    gezici = tmpHarf;
+                   geziciSatir = tmpSatir;
 
-                    if(geziciSatir == ilkSatir && geziciSatir->ilk == NULL)
-                        continue;
+        if(geziciSatir == ilkSatir && geziciSatir->ilk == NULL)
+        continue;
 
         if(gezici == NULL && geziciSatir != ilkSatir && gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir != ilkSatir){
             satirSil();
@@ -728,7 +731,7 @@ int tmpX = wherex(); int tmpY = wherey();
             }
 
       }
-            tmpSatir = tmpSatir->sonraki;
+            tmpSatir = tmpSatir->onceki;
 }
 
     gotoxy(tmpX,tmpY);
