@@ -9,7 +9,7 @@
 #define VK_V 86
 #define VK_X 88
 
-#define dosyaYolu "test2.txt"
+//#define dosyaYolu "test2.txt"
 
 int boyaliKarakter = 0;
 char *buf;
@@ -378,7 +378,7 @@ int tmpx = wherex(); int tmpy = wherey();
           }
        }else{
        if(gezici->onceki != NULL){
-          if(gezici == geziciSatir->son && tmpx>geziciSatir->satirUzunlugu){
+          if(gezici == geziciSatir->son && tmpx > geziciSatir->satirUzunlugu){
             gotoxy(tmpx-1,tmpy);
           }else{
               if(boya == true){
@@ -508,14 +508,19 @@ int tmpx = wherex(); int tmpy = wherey();
 
 }
 
-void kaydet(){
+void kaydet(char *dosyaYolu,char *dosyaAdi){
 
 
     FILE * dosya;
+    char * kayit;
 
-	if ((dosya = fopen(dosyaYolu, "w")) == NULL) {
+     strcat(dosyaYolu,dosyaAdi);
+     strcpy(kayit,dosyaYolu);
+
+
+	if ((dosya = fopen(kayit, "w")) == NULL) {
 		printf("dosya acilamadi!\n");
-		exit(1);
+		return;
 	}
 	struct satir *geciciSatir = ilkSatir;
     struct harf  *geciciHarf;
@@ -527,17 +532,20 @@ void kaydet(){
        }
        geciciSatir = geciciSatir->sonraki;
     }
+    printf("Kayit basarili");
     fclose(dosya);
 }
 
-void oku(){
+void oku(char *dosyaYolu){
 
     FILE * dosya;
 	char c;
 
+    clrscr();
+
 	if ((dosya = fopen(dosyaYolu, "r+")) == NULL) {
 		printf("dosya acilamadi!\n");
-		exit(1);
+		return;
 	}
 
 	while ((c = getc(dosya)) != EOF) {
@@ -570,6 +578,7 @@ void oku(){
 }
 
 void Ekrani_Ciz(){
+    clrscr();
     gotoxy(0,0);
     printf("%c",201);
     for(int i = 1;i<119;i++){
@@ -609,6 +618,12 @@ void Ekrani_Ciz(){
 
     gotoxy(10,3);
     printf("F2-Save");
+
+    gotoxy(18,3);
+    printf("F3-Menu");
+
+    gotoxy(27,3);
+    printf("F4-Yaz");
 
     gotoxy(1,6);
 }
@@ -651,10 +666,10 @@ int tmpX = wherex(); int tmpY = wherey();
     if(tip == 'v'){
 
         for(int i = 0;i<ibuf;i++){
+
 		 if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir->satirUzunlugu == 0){
            harfBasaEkle(buf[i]);
-        }
-        else if(gezici == geziciSatir->son){
+        }else if(gezici == geziciSatir->son){
                 if(buf[i]=='\n'){
                     harfSonaEkle(buf[i]);
                     if(geziciSatir == ilkSatir && geziciSatir == sonSatir){
@@ -665,15 +680,18 @@ int tmpX = wherex(); int tmpY = wherey();
                         satirSonaEkle();
                     }
 
-                }
-                else{
+                }else{
                     harfSonaEkle(buf[i]);
                 }
 
-
+            }else if(gezici != geziciSatir->son && gezici != geziciSatir->ilk){
+               harfArayaEkle(buf[i]);
+               gezici = gezici->sonraki;
+               gotoxy(wherex()+1,tmpY);
             }
 
         }
+
 
 
     } /// end of v
@@ -741,10 +759,40 @@ int tmpX = wherex(); int tmpY = wherey();
 
 }
 
+void kayitEkrani(){
+
+    char *dosyaAdi;
+    char *dosyaYolu;
+
+    clrscr();
+
+    printf("Dosya adini giriniz:");
+    scanf("%s",&dosyaAdi);
+
+    printf("Kayit etmek istediðiniz dosya yolunu giriniz:");
+    scanf("%s",&dosyaYolu);
+
+    kaydet(dosyaYolu,dosyaAdi);
+
+}
+
+void okumaEkrani(){
+
+    char *dosyaYolu;
+
+    clrscr();
+
+    printf("Dosya yolunu giriniz:");
+    scanf("%s",&dosyaYolu);
+
+    oku(dosyaYolu);
+
+}
+
 int main()
 {
 
-
+    bool aktifMi = false;
     Ekrani_Ciz();
     _setcursortype(_SOLIDCURSOR);
     textbackground(WHITE);
@@ -755,8 +803,33 @@ int main()
 
     satirBasaEkle();
 
+
+
     while(1){
 
+    if(GetAsyncKeyState(VK_F1)){
+        okumaEkrani();
+        continue;
+    }
+
+    if(GetAsyncKeyState(VK_F2)){
+       kayitEkrani();
+       continue;
+    }
+
+    if(GetAsyncKeyState(VK_F3)){
+        Ekrani_Ciz();
+        continue;
+    }
+
+    if(GetAsyncKeyState(VK_F4)){
+        aktifMi = true;
+        clrscr();
+        continue;
+    }
+
+    if(aktifMi == false)
+        continue;
 
     tus = _getch();
 
@@ -943,10 +1016,7 @@ int main()
 
 
     }
-        if(tus==27){
-           // kaydet();
-            oku();
-        }
+
         tus = 0;
 
     } /// while bitis
