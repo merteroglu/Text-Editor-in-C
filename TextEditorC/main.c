@@ -9,10 +9,11 @@
 #define VK_V 86
 #define VK_X 88
 
-//#define dosyaYolu "test2.txt"
 
 int boyaliKarakter = 0;
 char *buf;
+bool aktifMi = false;
+
 struct harf{
     int veri;
     int renk;
@@ -508,20 +509,22 @@ int tmpx = wherex(); int tmpy = wherey();
 
 }
 
-void kaydet(char *dosyaYolu,char *dosyaAdi){
+void kaydet(char dosyaYolu[],char dosyaAdi[]){
 
 
     FILE * dosya;
-    char * kayit;
+    char kayit[50];
 
-     strcat(dosyaYolu,dosyaAdi);
+
      strcpy(kayit,dosyaYolu);
+     strcat(kayit,dosyaAdi);
 
 
 	if ((dosya = fopen(kayit, "w")) == NULL) {
 		printf("dosya acilamadi!\n");
 		return;
 	}
+
 	struct satir *geciciSatir = ilkSatir;
     struct harf  *geciciHarf;
 
@@ -572,7 +575,7 @@ void oku(char *dosyaYolu){
             }
 
         }
-
+    aktifMi = true;
 	fclose(dosya);
 	gotoxy(wherex()-1,wherey());
 }
@@ -761,17 +764,16 @@ int tmpX = wherex(); int tmpY = wherey();
 
 void kayitEkrani(){
 
-    char *dosyaAdi;
-    char *dosyaYolu;
+    char dosyaAdi[50];
+    char dosyaYolu[50];
 
     clrscr();
 
     printf("Dosya adini giriniz:");
-    scanf("%s",&dosyaAdi);
-
-    printf("Kayit etmek istediðiniz dosya yolunu giriniz:");
-    scanf("%s",&dosyaYolu);
-
+    gets(dosyaAdi);
+    printf("Kayit etmek istediginiz dosya yolunu giriniz:");
+    gets(dosyaYolu);
+    //strcpy(dosyaYolu,"D:/");
     kaydet(dosyaYolu,dosyaAdi);
 
 }
@@ -783,7 +785,7 @@ void okumaEkrani(){
     clrscr();
 
     printf("Dosya yolunu giriniz:");
-    scanf("%s",&dosyaYolu);
+    gets(dosyaYolu);
 
     oku(dosyaYolu);
 
@@ -792,7 +794,7 @@ void okumaEkrani(){
 int main()
 {
 
-    bool aktifMi = false;
+
     Ekrani_Ciz();
     _setcursortype(_SOLIDCURSOR);
     textbackground(WHITE);
@@ -808,16 +810,19 @@ int main()
     while(1){
 
     if(GetAsyncKeyState(VK_F1)){
+        aktifMi = false;
         okumaEkrani();
         continue;
     }
 
     if(GetAsyncKeyState(VK_F2)){
+        aktifMi = false;
        kayitEkrani();
        continue;
     }
 
     if(GetAsyncKeyState(VK_F3)){
+        aktifMi = false;
         Ekrani_Ciz();
         continue;
     }
