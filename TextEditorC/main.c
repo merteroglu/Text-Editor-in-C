@@ -343,19 +343,73 @@ struct satir *geciciSatir = ilkSatir;
 void imlecTasi(char nereye,bool boya){
 int tmpx = wherex(); int tmpy = wherey();
     if(nereye == 'R'){
-       if(gezici->sonraki != NULL){
-         if(boya == true){
-           gezici->renk = 1;
-           boyaliKarakter++;
-           ekranaBas();
-         }else if(boya == false && boyaliKarakter != 0){
-            boyaTemizle();
-            ekranaBas();
+       if(gezici == geziciSatir->son){
+          if(geziciSatir != sonSatir){
+                if(boya == true){
+                    gezici->renk = 1;
+                    boyaliKarakter++;
+                    ekranaBas();
+                }else if(boya == false && boyaliKarakter != 0){
+                    boyaTemizle();
+                    ekranaBas();
+                }
+            geziciSatir = geziciSatir->sonraki;
+            gezici = geziciSatir->ilk;
+
+            gotoxy(1,tmpy+1);
+          }else if(geziciSatir == sonSatir){
+                if(boya == true){
+                    gezici->renk = 1;
+                    boyaliKarakter++;
+                    ekranaBas();
+
+                }
+                else if(boya == false && boyaliKarakter != 0){
+                    boyaTemizle();
+                    ekranaBas();
+                }
+
+                gotoxy(sonSatir->satirUzunlugu,tmpy);
+          }
+       }
+       else{
+           if(gezici->sonraki != NULL){
+              if(gezici == geziciSatir->ilk && tmpx<geziciSatir->satirUzunlugu){
+
+                   if(boya == true){
+                    gezici->renk = 1;
+                    boyaliKarakter++;
+                    ekranaBas();
+                   }
+                   else if(boya == false && boyaliKarakter != 0){
+                    boyaTemizle();
+                    ekranaBas();
+                    }
+              }else{
+                  if(boya == true){
+                    gezici->renk = 1;
+                    boyaliKarakter++;
+                    ekranaBas();
+                   }else if(boya == false && boyaliKarakter != 0){
+                    boyaTemizle();
+                    ekranaBas();
+                    }
+
+               }
+                gezici = gezici->sonraki;
+
+                gotoxy(tmpx+1,tmpy);
+         }else if(gezici->sonraki == NULL && gezici == geziciSatir->son){
+              if(boya == true){
+               gezici->renk = 1;
+               boyaliKarakter++;
+               ekranaBas();
+              }else if(boya == false && boyaliKarakter != 0){
+                boyaTemizle();
+                ekranaBas();
+                }
+             gotoxy(tmpx,tmpy);
          }
-        gezici = gezici->sonraki;
-        gotoxy(tmpx+1,tmpy);
-       }else if(gezici->sonraki == NULL && gezici == geziciSatir->son && tmpx == geziciSatir->satirUzunlugu){
-        gotoxy(tmpx+1,tmpy);
        }
     }else if(nereye == 'L'){
        if(gezici == geziciSatir->ilk){
