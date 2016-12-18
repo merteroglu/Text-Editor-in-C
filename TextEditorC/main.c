@@ -44,7 +44,7 @@ if(geziciSatir->ilk == NULL){
     yeni->sonraki = NULL;
     geziciSatir->ilk = geziciSatir->son = gezici = yeni;
     geziciSatir->satirUzunlugu++;
-
+     boyaTemizle();
     ekranaBas();
     gotoxy(2,tmpy);
 
@@ -55,10 +55,10 @@ if(geziciSatir->ilk == NULL){
     geziciSatir->ilk = yeni;
     gezici = geziciSatir->ilk;
     geziciSatir->satirUzunlugu++;
-   // gotoxy(wherex()-1,wherey());
+
+    boyaTemizle();
     ekranaBas();
     gotoxy(1,tmpy);
-    //imlecTasi('L');
 }
 
 }
@@ -76,7 +76,7 @@ int tmpx = wherex(); int tmpy = wherey();
             gezici->onceki->sonraki = yeni;
             gezici->onceki = yeni;
             geziciSatir->satirUzunlugu++;
-            //gotoxy(wherex()+1,wherey());
+             boyaTemizle();
             ekranaBas();
             gotoxy(tmpx+1,tmpy);
             }else if(gezici == geziciSatir->ilk){
@@ -85,6 +85,7 @@ int tmpx = wherex(); int tmpy = wherey();
               gezici->onceki = yeni;
               geziciSatir->ilk = yeni;
               geziciSatir->satirUzunlugu++;
+               boyaTemizle();
               ekranaBas();
               gotoxy(tmpx+1,tmpy);
             }
@@ -97,6 +98,7 @@ int tmpx = wherex(); int tmpy = wherey();
           gezici = yeni;
           geziciSatir->satirUzunlugu++;
 
+            boyaTemizle();
            ekranaBas();
         }
 
@@ -117,6 +119,7 @@ void harfArayaEkle(int data){
         geziciSatir->satirUzunlugu++;
         gezici = yeni;
 
+         boyaTemizle();
          ekranaBas();
          gotoxy(tmpx,tmpy);
 
@@ -135,6 +138,7 @@ int tmpx = wherex(); int tmpy = wherey();
         gezici->onceki = silincek->onceki;
         free(silincek);
         geziciSatir->satirUzunlugu--;
+
         ekranaBas();
         gotoxy(tmpx-1,tmpy);
        }else if(geziciSatir->satirUzunlugu == 2){
@@ -145,6 +149,7 @@ int tmpx = wherex(); int tmpy = wherey();
         gezici->sonraki = NULL;
         geziciSatir->satirUzunlugu--;
         free(silincek);
+
         ekranaBas();
         gotoxy(tmpx-1,tmpy);
        }
@@ -157,7 +162,8 @@ int tmpx = wherex(); int tmpy = wherey();
         geziciSatir->son = gezici;
         geziciSatir->satirUzunlugu--;
         free(silincek);
-         ekranaBas();
+
+        ekranaBas();
         gotoxy(tmpx-1,tmpy);
     }else if(gezici == geziciSatir->ilk && gezici == geziciSatir->son && gezici->veri == 10 &&geziciSatir->satirUzunlugu == 1 && geziciSatir != ilkSatir){
         silincek = gezici;
@@ -172,6 +178,7 @@ int tmpx = wherex(); int tmpy = wherey();
             gezici=geziciSatir->ilk;
             geziciSatir->satirUzunlugu--;
             free(silincek);
+
             ekranaBas();
             gotoxy(tmpx,tmpy);
         }else if(geziciSatir->satirUzunlugu == 1){
@@ -182,6 +189,7 @@ int tmpx = wherex(); int tmpy = wherey();
             geziciSatir->son = NULL;
             geziciSatir->satirUzunlugu--;
             free(silincek);
+
             ekranaBas();
             gotoxy(tmpx-1,tmpy);
         }
@@ -192,6 +200,7 @@ int tmpx = wherex(); int tmpy = wherey();
         silincek->sonraki->onceki = silincek->onceki;
         geziciSatir->satirUzunlugu--;
         gezici = gezici->onceki;
+
         ekranaBas();
         gotoxy(tmpx-1,tmpy);
         free(silincek);
@@ -814,6 +823,29 @@ int tmpX = wherex(); int tmpY = wherey();
     } /// end of x
 
 
+    if(tip == 'a'){
+
+        struct satir *geciciSatir = ilkSatir;
+        struct harf  *geciciHarf;
+
+    while(geciciSatir != NULL){
+       for(geciciHarf=geciciSatir->ilk;geciciHarf!=NULL;geciciHarf=geciciHarf->sonraki){
+            if (geciciHarf->renk == 0){
+                geciciHarf->renk = 1;
+                boyaliKarakter++;
+            }
+       }
+       geciciSatir = geciciSatir->sonraki;
+    }
+
+    geziciSatir = ilkSatir;
+    gezici = geziciSatir->ilk;
+
+
+    ekranaBas();
+    gotoxy(1,1);
+    }
+
 }
 
 void kayitEkrani(){
@@ -863,36 +895,47 @@ int main()
 
     while(1){
 
+    tus = _getch();
+
+
     if(GetAsyncKeyState(VK_F1)){
         aktifMi = false;
         okumaEkrani();
+        tus = 0;
         continue;
     }
 
     if(GetAsyncKeyState(VK_F2)){
         aktifMi = false;
        kayitEkrani();
+       tus = 0;
        continue;
     }
 
     if(GetAsyncKeyState(VK_F3)){
         aktifMi = false;
         Ekrani_Ciz();
+        tus = 0;
         continue;
     }
 
     if(GetAsyncKeyState(VK_F4)){
         aktifMi = true;
         clrscr();
+        tus = 0;
         continue;
     }
 
-    if(aktifMi == false)
+    if(aktifMi == false){
+        tus = 0;
         continue;
+    }
 
-    tus = _getch();
 
-    if(tus>31 && tus<127 || ( tus == 3 || tus == 22 || tus == 24 ) ){
+
+
+
+    if(tus>31 && tus<127 || ( tus == 3 || tus == 22 || tus == 24 || tus == 1 ) ){
 
     if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_LEFT) ){
      imlecTasi('L',true);
@@ -906,6 +949,9 @@ int main()
     }else if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_DOWN)){
      imlecTasi('D',true);
      continue;
+    }else if(tus == 1){
+    ciftTuslar('a');
+    continue;
     }else if(tus == 3){
     ciftTuslar('c');
     continue;
@@ -942,6 +988,39 @@ int main()
     }
 
     if(tus == 8){
+     int tmpx = wherex(); int tmpy = wherey();
+            if(boyaliKarakter > 0){
+
+                  struct satir *tmpSatir = sonSatir;
+                  struct harf *tmpHarf;
+
+                  while(tmpSatir != NULL){
+
+            for(tmpHarf = tmpSatir->ilk;tmpHarf != NULL;tmpHarf = tmpHarf->sonraki){
+
+                if(tmpHarf->renk == 1){
+                   gezici = tmpHarf;
+                   geziciSatir = tmpSatir;
+
+                        if(geziciSatir == ilkSatir && geziciSatir->ilk == NULL)
+                        continue;
+
+                        if(gezici == NULL && geziciSatir != ilkSatir && gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir != ilkSatir){
+                            satirSil();
+                        }else if(gezici->veri == 10 && gezici != NULL && gezici == geziciSatir->ilk && gezici == geziciSatir->son && geziciSatir != ilkSatir){
+                            satirSil();
+                        }else if(gezici != NULL){
+                            harfSil();
+                        }
+                    }
+                }
+        tmpSatir = tmpSatir->onceki;
+    }
+    gotoxy(tmpx,tmpy);
+continue;
+}
+
+
        if(geziciSatir == ilkSatir && geziciSatir->ilk == NULL)
        continue;
 
@@ -1071,7 +1150,13 @@ int main()
 
         gotoxy(tmpLenght+1,yy+1);
 
-       }
+       }else if(gezici == geziciSatir->ilk && gezici != NULL && geziciSatir != ilkSatir && geziciSatir->onceki != NULL){
+
+            geziciSatir = geziciSatir->onceki;
+            satirArayaEkle();
+            gotoxy(1,wherey()-1);
+
+          }
 
 
     }
