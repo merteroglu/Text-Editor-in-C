@@ -896,7 +896,7 @@ int main()
     while(1){
 
     tus = _getch();
-    printf("%d",tus);
+
 
     if(GetAsyncKeyState(VK_F1)){
         aktifMi = false;
