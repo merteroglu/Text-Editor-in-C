@@ -896,7 +896,7 @@ int main()
     while(1){
 
     tus = _getch();
-
+    printf("%d",tus);
 
     if(GetAsyncKeyState(VK_F1)){
         aktifMi = false;
@@ -935,7 +935,7 @@ int main()
 
 
 
-    if(tus>31 && tus<127 || ( tus == 3 || tus == 22 || tus == 24 || tus == 1 ) ){
+    if(tus>31 && tus<127 || ( tus == 3 || tus == 22 || tus == 24 || tus == 1 || tus == 128 || tus == 129|| tus == 135|| tus == 148|| tus == 152|| tus == 154|| tus == 158|| tus == 159|| tus == 166|| tus == 167 || tus == 141 || tus == 153 ) ){
 
     if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_LEFT) ){
      imlecTasi('L',true);
