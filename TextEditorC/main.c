@@ -608,6 +608,11 @@ void oku(char *dosyaYolu){
 	char c;
 
     clrscr();
+    ilkSatir=NULL;
+    sonSatir=NULL;
+    geziciSatir=NULL;
+
+    satirBasaEkle();
 
 	if ((dosya = fopen(dosyaYolu, "r+")) == NULL) {
 		printf("dosya acilamadi!\n");
@@ -935,7 +940,7 @@ int main()
 
 
 
-    if(tus>31 && tus<127 || ( tus == 3 || tus == 22 || tus == 24 || tus == 1 || tus == 128 || tus == 129|| tus == 135|| tus == 148|| tus == 152|| tus == 154|| tus == 158|| tus == 159|| tus == 166|| tus == 167 || tus == 141 || tus == 153 ) ){
+    if(tus>31 && tus<127 || ( tus == 3 || tus == 22 || tus == 24 || tus == 1 ) ){
 
     if(GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_LEFT) ){
      imlecTasi('L',true);
